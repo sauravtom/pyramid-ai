@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <title>△-ai</title>
+
+        <link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAvwAAAAAAAAAAAAAAAAAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQAAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM8AAAD/AAAA/wAAAM8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA/wAAAP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8AAP//AACAAQAAwAMAAP//AADgBwAA8A8AAP//AAD4HwAA+B8AAP//AAD8PwAA/n8AAP5/AAD//wAA//8AAA==" rel="icon" type="image/x-icon" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <style type="text/css">
+        html {
+          box-sizing: border-box;
+          outline: none;
+        }
+        html *, html *:before, html *:after {
+          box-sizing: inherit;
+        }
+        html *:focus, html *:before:focus, html *:after:focus {
+          outline: inherit;
+        }
+
+        .title {
+          text-align: center;
+          font-weight: 200;
+          margin-top: 50px;
+        }
+
+        .input-wrapper {
+          position: relative;
+          width: 90%;
+          max-width: 500px;
+          margin: 50px auto 0;
+          -webkit-transition: 300ms ease;
+          transition: 300ms ease;
+        }
+        .input-wrapper .query {
+          height: 50px;
+          width: 100%;
+          display: block;
+          padding: 0 25px;
+          border: 1px solid #ccc;
+          -webkit-transition: 300ms ease;
+          transition: 300ms ease;
+        }
+        .input-wrapper .query:focus {
+          outline: none;
+          border: 1px solid #2196F3;
+          -webkit-transition: 300ms ease;
+          transition: 300ms ease;
+        }
+        .input-wrapper .loader {
+          height: 5px;
+          margin: 0;
+          padding: 0;
+          background: white;
+          margin: 0 auto;
+          position: relative;
+        }
+        .input-wrapper .loader:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          background: #2196F3;
+          width: 0%;
+          height: 5px;
+          -webkit-transition: 300ms ease;
+          transition: 300ms ease;
+        }
+        .input-wrapper .loader.done:before {
+          width: 100%;
+        }
+        .input-wrapper .clear {
+          position: absolute;
+          top: 0;
+          right: 0;
+          height: 50px;
+          width: 30px;
+          opacity: 1;
+        }
+        .input-wrapper .clear:before {
+          content: '\00d7';
+          color: #2196F3;
+          position: absolute;
+          top: 0;
+          left: 0;
+          text-align: center;
+          width: 100%;
+          line-height: 50px;
+          -webkit-transition: 300ms ease;
+          transition: 300ms ease;
+        }
+        .input-wrapper .clear:hover:before {
+          cursor: pointer;
+        }
+        .input-wrapper.active {
+          margin-top: -55px;
+        }
+        .input-wrapper.active .query {
+          height: 30px;
+          margin-top: 0px;
+          -webkit-transition: 300ms ease;
+          transition: 300ms ease;
+        }
+        .input-wrapper.active .clear {
+          height: 30px;
+        }
+        .input-wrapper.active .clear:before {
+          line-height: 30px;
+        }
+        .input-wrapper.empty .clear {
+          opacity: 0;
+        }
+
+        .result {
+          width: 100%;
+          max-width: 500px;
+          margin: 0 auto;
+          padding: 5% 25px 0;
+          /* background: #eee; */
+        }
+        .result img, .result p.no-results {
+          width: 100%;
+          max-width: 500px;
+          height: auto;
+          opacity: 1;
+          -webkit-transition: 300ms ease;
+          transition: 300ms ease;
+        }
+        .result img.hidden, .result p.no-results.hidden {
+          opacity: 0;
+          -webkit-transition: 300ms ease;
+          transition: 300ms ease;
+        }
+        .result p.no-result {
+          font-weight: 200;
+        }
+        .result p.no-result.center {
+          text-align: center;
+        }
+
+        .random {
+          width: 90%;
+          max-width: 500px;
+          margin: 50px auto;
+          height: 50px;
+          display: block;
+          background: #2196F3;
+          color: white;
+          border: none;
+          opacity: 0;
+          -webkit-transition: 300ms ease;
+          transition: 300ms ease;
+        }
+        .random:hover {
+          background: #0c7cd5;
+        }
+        .random.active {
+          opacity: 1;
+        }
+
+    </style>
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    
+    <h1 class="title">Giphy API Search</h1>
+
+    <div class="input-wrapper empty">
+        <input type="text" class="query" />
+        <div class="loader"></div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="result">
+      <p class="no-result center">
+        Quick example of the <a href="https://github.com/giphy/GiphyAPI">Giphy Api</a> which is pretty cool if you ask me. Just type in a search phase and get a random related GIF.
+        <br /> <br />
+        I also decided to go nuts and use <a href="https://github.com/lukehoban/es6features">ES6</a> features (like let, const, fat arrow function syntax and string templates) and the <a href="https://github.com/google/traceur-compiler">Traceur Compiler</a> just to play around with whats coming up in the next generation of javascript, some pretty cool stuff.
+        <br /> <br />
+        By: Blake Tarter
+      </p>
+    </div>
+
+    <button class="random">Get Another GIF</button>
+
+
+  </body>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+  <script type="text/javascript" src='script.js'></script>
+
+
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-88080720-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+
+
+
+</html>
