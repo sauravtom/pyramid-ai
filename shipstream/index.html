@@ -50,6 +50,13 @@
         hi
     </div>
 
+
+        <div id='player'>player       
+                <input type="button" href="#" id="stream" class="big button" value="Stream It Again, Sam" />
+            </div>
+
+
+
   </body>
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -60,7 +67,7 @@
           // Initiate gifLoop for set interval
           var refresh;
           // Duration count in seconds
-          const duration = 1000 * 10000;
+          const duration = 1000 * 10;
           // Giphy API defaults
           const giphy = {
               baseURL: 'http://api.giphy.com/v1/gifs/',
@@ -106,11 +113,12 @@
 
       function f1() {
               
+                  playSounds();
 
                   // Initiate gifLoop for set interval
                   var refresh;
                   // Duration count in seconds
-                  const duration = 1000 * 10000;
+                  const duration = 1000 * 10;
                   // Giphy API defaults
                   const giphy = {
                       baseURL: 'http://api.giphy.com/v1/gifs/',
@@ -162,6 +170,57 @@
 
 
   </script>
+
+
+  <script src="//connect.soundcloud.com/sdk-2.0.0.js"></script> 
+
+  <script>
+      
+      function randomTrack(genre, limiter){
+        SC.get('/tracks', {genres:genre, limit:limiter})
+          .then(function(tracks) {        
+              var random = Math.floor(Math.random() * (limiter-1));
+              console.log(tracks[random].title);    
+      });
+      }
+
+      console.log( randomTrack('hiphop', 50)  );
+
+      SC.initialize({
+          client_id: "53902af7a344bb0351898c47bc3d786f"
+      });
+
+      $(document).ready(function() {
+          $("#stream").on("click", function(){
+              SC.stream("/tracks/49712607", function(sound){
+                  sound.play();
+              });
+          });
+      });
+    </script>
+
+
+    <script>
+    var sounds = ["http://www.stephaniequinn.com/Music/Allegro%20from%20Duet%20in%20C%20Major.mp3",
+                  "http://www.stephaniequinn.com/Music/Canon.mp3",
+                  "http://www.stephaniequinn.com/Music/Handel%20Royal%20Fireworks%20-%2007.mp3",
+                  "http://www.stephaniequinn.com/Music/Commercial%20DEMO%20-%2009.mp3"],
+        oldSounds = [];
+
+    var playSounds = function () {
+        var index = Math.floor(Math.random() * (sounds.length)),
+            thisSound = sounds[index];
+
+            oldSounds.push(thisSound);
+            sounds.splice(index, 1);
+
+            if (sounds.length < 1) {
+                sounds = oldSounds.splice(0, oldSounds.length);
+            }
+
+            $("#element").html("<audio autoplay><source src=\"" + thisSound + "\" type=\"audio/mpeg\"><embed src=\"" + thisSound + "\" hidden=\"true\" autostart=\"true\" /></audio>");
+    }
+    </script>
 
 
   <script>
