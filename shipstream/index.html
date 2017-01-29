@@ -44,16 +44,13 @@
   </head>
   <body onclick="f1()">
     
-    <h1>PYRAMID AI</h1>
-
-    <div id='gif-wrap'>
-        hi
-    </div>
-
-
-        <div id='player'>player       
-                <input type="button" href="#" id="stream" class="big button" value="Stream It Again, Sam" />
+  
+        <div id='player'>      
+                <input type="button" href="#" id="stream" class="big button" value="Click to begin the adventure" />
             </div>
+
+
+        
 
 
 
@@ -61,60 +58,34 @@
 
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
+  <script type="text/javascript" src="https://rawgit.com/sdkcarlos/artyom.js/master/build/artyom.min.js"></script>
+
   <script type="text/javascript">
 
       $(document).ready(function() {
-          // Initiate gifLoop for set interval
-          var refresh;
-          // Duration count in seconds
-          const duration = 1000 * 10;
-          // Giphy API defaults
-          const giphy = {
-              baseURL: 'http://api.giphy.com/v1/gifs/',
-              key: 'dc6zaTOxFJmzC',
-              tag: 'Hello',
-              type: 'random',
-              rating: 'pg-13'
-          };
-          // Target gif-wrap container
-          const $gif_wrap = $('#gif-wrap');
-          // Giphy API URL
-          let giphyURL = encodeURI(giphy.baseURL + giphy.type + '?api_key=' + giphy.key + '&tag=' + giphy.tag + '&rating=' + giphy.rating);
+          
+          function startOneCommandArtyom(){
+              artyom.fatality();// use this to stop any of
 
-          // Call Giphy API and render data    
-          var newGif = () => $.getJSON(giphyURL, (json) => renderGif(json.data));
+              setTimeout(function(){// if you use artyom.fatality , wait 250 ms to initialize again.
+                   artyom.initialize({
+                      lang:"en-GB",// A lot of languages are supported. Read the docs !
+                      continuous:false,// recognize 1 command and stop listening !
+                      listen:true, // Start recognizing
+                      debug:true, // Show everything in the console
+                      speed:1 // talk normally
+                  });
+              },250);
 
-          // Display Gif in gif wrap container
-          var renderGif = (_giphy) => {
-              // Set gif as bg image
-              $("body").css({
-                  'background-image': 'url("' + _giphy.image_original_url + '")'
-              });
+              artyom.say("Now i'll say this");
+          }
 
-              // Start duration countdown
-              refreshRate();
-          };
-
-          // Call for new gif after duration 
-          var refreshRate = () => {
-              // Reset set intervals
-              clearInterval(refresh);
-              refresh = setInterval(function() {
-                  // Call Giphy API for new gif
-                  newGif();
-              }, duration);
-          };
-
-          // Call Giphy API for new gif
-          newGif();
+          startOneCommandArtyom();
 
       });
 
 
       function f1() {
-              
-                  playSounds();
-
                   // Initiate gifLoop for set interval
                   var refresh;
                   // Duration count in seconds
@@ -163,64 +134,11 @@
 
       }
 
-      window.onClick= function()
-      {
-            alert('test');
-      }
-
 
   </script>
 
 
-  <script src="//connect.soundcloud.com/sdk-2.0.0.js"></script> 
-
-  <script>
-      
-      function randomTrack(genre, limiter){
-        SC.get('/tracks', {genres:genre, limit:limiter})
-          .then(function(tracks) {        
-              var random = Math.floor(Math.random() * (limiter-1));
-              console.log(tracks[random].title);    
-      });
-      }
-
-      console.log( randomTrack('hiphop', 50)  );
-
-      SC.initialize({
-          client_id: "53902af7a344bb0351898c47bc3d786f"
-      });
-
-      $(document).ready(function() {
-          $("#stream").on("click", function(){
-              SC.stream("/tracks/49712607", function(sound){
-                  sound.play();
-              });
-          });
-      });
-    </script>
-
-
-    <script>
-    var sounds = ["http://www.stephaniequinn.com/Music/Allegro%20from%20Duet%20in%20C%20Major.mp3",
-                  "http://www.stephaniequinn.com/Music/Canon.mp3",
-                  "http://www.stephaniequinn.com/Music/Handel%20Royal%20Fireworks%20-%2007.mp3",
-                  "http://www.stephaniequinn.com/Music/Commercial%20DEMO%20-%2009.mp3"],
-        oldSounds = [];
-
-    var playSounds = function () {
-        var index = Math.floor(Math.random() * (sounds.length)),
-            thisSound = sounds[index];
-
-            oldSounds.push(thisSound);
-            sounds.splice(index, 1);
-
-            if (sounds.length < 1) {
-                sounds = oldSounds.splice(0, oldSounds.length);
-            }
-
-            $("#element").html("<audio autoplay><source src=\"" + thisSound + "\" type=\"audio/mpeg\"><embed src=\"" + thisSound + "\" hidden=\"true\" autostart=\"true\" /></audio>");
-    }
-    </script>
+  
 
 
   <script>
